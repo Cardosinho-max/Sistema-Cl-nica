@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Sistema da Clínica - Exame Clínico</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; background-color: #f4f6f9; }
+        .container { max-width: 600px; background: white; padding: 25px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); margin: auto; }
+        h1 { color: #2c3e50; font-size: 24px; }
+        label { font-weight: bold; display: block; margin-top: 15px; }
+        input, select, textarea { width: 100%; padding: 8px; margin-top: 5px; box-sizing: border-box; border: 1px solid #ccc; border-radius: 4px; }
+        button { margin-top: 20px; background: #27ae60; color: white; border: none; padding: 12px; width: 100%; font-size: 16px; border-radius: 5px; cursor: pointer; }
+        button:hover { background: #219150; }
+        .laudo { margin-top: 30px; border-top: 2px dashed #ccc; padding-top: 20px; }
+        .btn-print { background: #2980b9; margin-top: 10px; }
+        .btn-print:hover { background: #1f618d; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Gerador de Exame Clínico</h1>
+        
+        <form action="/" method="POST">
+            <label for="paciente">Nome do Paciente:</label>
+            <input type="text" id="paciente" name="paciente" required>
+
+            <label for="tipo_exame">Tipo de Exame:</label>
+            <select id="tipo_exame" name="tipo_exame">
+                <option value="Avaliação Clínica Geral">Avaliação Clínica Geral</option>
+                <option value="Exame de Vista / Refracional">Exame de Vista / Refracional</option>
+                <option value="Atestado Ocupacional">Atestado Ocupacional</option>
+            </select>
+
+            <label for="observacoes">Observações / Laudo:</label>
+            <textarea id="observacoes" name="observacoes" rows="4" placeholder="Digite as conclusões do exame..."></textarea>
+
+            <button type="submit">Gerar Exame Clínico</button>
+        </form>
+
+        {% if paciente %}
+        <div class="laudo">
+            <h2>Comprovativo / Laudo Gerado</h2>
+            <p><strong>Paciente:</strong> {{ paciente }}</p>
+            <p><strong>Exame:</strong> {{ tipo_exame }}</p>
+            <p><strong>Resultado/Observações:</strong> {{ observacoes }}</p>
+            <button class="btn-print" onclick="window.print()">Imprimir / Salvar em PDF</button>
+        </div>
+        {% endif %}
+    </div>
+</body>
+</html>
