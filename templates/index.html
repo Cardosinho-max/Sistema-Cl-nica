@@ -139,9 +139,14 @@
                         </div>
 
                         <div class="mb-3">
-                            <label class="form-label">Tipo de Exame / Procedimento</label>
-                            <input type="text" class="form-control" name="exame" placeholder="Ex: Avaliação Ocupacional / Exame Clínico">
-                        </div>
+    <label class="form-label">Tipo de Exame / Procedimento</label>
+    <select class="form-select" name="exame" required>
+        <option value="" selected disabled>Selecione o tipo de exame...</option>
+        <option value="Exame Clínico">Exame Clínico</option>
+        <option value="Psicossocial">Psicossocial</option>
+        <option value="Acuidade Visual">Acuidade Visual</option>
+    </select>
+</div>
 
                         <div class="mb-4">
                             <label class="form-label">Descrição / Conclusão do Laudo</label>
