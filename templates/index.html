@@ -8,67 +8,98 @@
     <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     
-    <!-- Ícones FontAwesome (para a cruz vermelha e símbolos) -->
+    <!-- Ícones FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 
     <style>
-        /* Fundo em azul piscina misturado com verde musgo */
+        /* Fundo com Gradiente Azul Piscina + Verde Musgo mais Vivo */
         body {
             font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
-            background: linear-gradient(135deg, #00ced1 0%, #355e3b 100%);
+            background: linear-gradient(135deg, #00d2ff 0%, #11998e 50%, #38ef7d 100%);
+            background-size: 200% 200%;
+            animation: gradientAnimation 10s ease infinite;
             min-height: 100vh;
-            color: #111111; /* Texto geral em preto */
+            color: #111111;
         }
 
-        /* Cartão principal em branco puro */
+        /* Animação suave no fundo para dar vida */
+        @keyframes gradientAnimation {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Cartão Central Vivo e Destacado */
         .card-clinica {
             background-color: #ffffff;
             border: none;
-            border-radius: 16px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-            padding: 2rem;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25), 0 0 20px rgba(0, 210, 255, 0.3);
+            padding: 2.5rem;
+            transition: transform 0.3s ease;
         }
 
-        /* Cabeçalho da clínica */
+        /* Nome do site em Azul Elétrico Vivo */
         .brand-title {
-            font-size: 2rem;
-            font-weight: 700;
-            color: #0d6efd; /* Nome/Destaque em Azul */
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: #0066ff;
+            text-shadow: 0 2px 10px rgba(0, 102, 255, 0.15);
         }
 
-        /* Cruz Vermelha */
+        /* Cruz Vermelha Brilhante */
         .cruz-vermelha {
-            color: #dc3545;
-            margin-right: 10px;
+            color: #ff2a4b;
+            filter: drop-shadow(0 2px 6px rgba(255, 42, 75, 0.4));
+            margin-right: 12px;
         }
 
-        /* Elementos e Títulos Importantes em Azul */
+        /* Título de Secção Importante */
         .texto-importante {
-            color: #0d6efd;
-            font-weight: 600;
+            color: #0052cc;
+            font-weight: 700;
+            font-size: 1.25rem;
         }
 
-        /* Labels dos formulários em Preto */
+        /* Estilo dos Rótulos (Labels) */
         .form-label {
             color: #111111;
-            font-weight: 600;
+            font-weight: 700;
             font-size: 0.95rem;
         }
 
-        /* Botão Principal */
+        /* Campos de Entrada (Inputs) Mais Vivos e Interativos */
+        .form-control {
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 12px 15px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus {
+            border-color: #0066ff;
+            box-shadow: 0 0 12px rgba(0, 102, 255, 0.3);
+        }
+
+        /* Botão com Gradiente Azul e Animação ao Passar o Rato */
         .btn-emissao {
-            background-color: #0d6efd;
-            border-color: #0d6efd;
+            background: linear-gradient(135deg, #0066ff 0%, #0044cc 100%);
+            border: none;
             color: #ffffff;
-            font-weight: 600;
-            padding: 12px;
-            border-radius: 8px;
-            font-size: 1.05rem;
+            font-weight: 700;
+            padding: 14px;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            box-shadow: 0 8px 20px rgba(0, 102, 255, 0.35);
+            transition: all 0.3s ease;
         }
 
         .btn-emissao:hover {
-            background-color: #0b5ed7;
-            border-color: #0a58ca;
+            transform: translateY(-2px);
+            box-shadow: 0 12px 25px rgba(0, 102, 255, 0.5);
+            background: linear-gradient(135deg, #0055ee 0%, #0033bb 100%);
+            color: #ffffff;
         }
     </style>
 </head>
@@ -78,23 +109,23 @@
         <div class="row justify-content-center">
             <div class="col-lg-8">
                 
-                <!-- Card em Fundo Branco -->
+                <!-- Cartão com Fundo Branco e Sombra Brilhante -->
                 <div class="card-clinica">
                     
-                    <!-- Cabeçalho com Logótipo / Nome e Cruz Vermelha -->
+                    <!-- Logótipo da Clínica -->
                     <div class="text-center mb-4 pb-3 border-bottom">
                         <h1 class="brand-title d-flex align-items-center justify-content-center">
                             <i class="fa-solid fa-cross cruz-vermelha"></i>empresarialclinic
                         </h1>
-                        <p class="text-muted mb-0">Sistema de Emissão de Laudos Médicos</p>
+                        <p class="text-secondary fw-semibold mb-0">Sistema Inteligente de Emissão de Laudos</p>
                     </div>
 
-                    <!-- Título da Secção Importante em Azul -->
+                    <!-- Título Importante -->
                     <h4 class="texto-importante mb-3">
                         <i class="fa-solid fa-file-medical me-2"></i>Novo Laudo Clínico
                     </h4>
 
-                    <!-- Formulário de Exemplo -->
+                    <!-- Formulário -->
                     <form action="/gerar" method="POST">
                         <div class="row mb-3">
                             <div class="col-md-8 mb-3 mb-md-0">
@@ -117,9 +148,9 @@
                             <textarea class="form-control" name="conclusao" rows="5" placeholder="Digite o parecer clínico..."></textarea>
                         </div>
 
-                        <!-- Botão Importante em Azul -->
+                        <!-- Botão com Brilho e Gradiente -->
                         <button type="submit" class="btn btn-emissao w-100">
-                            <i class="fa-solid fa-check-circle me-2"></i>Gerar e Emitir Laudo
+                            <i class="fa-solid fa-circle-check me-2"></i>Gerar e Emitir Laudo
                         </button>
                     </form>
 
