@@ -1,201 +1,373 @@
 <!DOCTYPE html>
-<html lang="pt">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>empresarialclinic - Gerador de Laudos</title>
-    
-    <!-- Bootstrap 5 CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    
-    <!-- Ícones FontAwesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-
+    <title>Sistema de Laudos Clínicos & Medicina do Trabalho</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#f0f7ff',
+                            100: '#e0effe',
+                            500: '#0284c7',
+                            600: '#0369a1',
+                            700: '#035485',
+                            900: '#0f172a',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
     <style>
-        /* Fundo com Gradiente Azul Piscina + Verde Musgo mais Vivo */
-        body {
-            font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
-            background: linear-gradient(135deg, #00d2ff 0%, #11998e 50%, #38ef7d 100%);
-            background-size: 200% 200%;
-            animation: gradientAnimation 10s ease infinite;
-            min-height: 100vh;
-            color: #111111;
-        }
-
-        /* Animação suave no fundo para dar vida */
-        @keyframes gradientAnimation {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-
-        /* Cartão Central Vivo e Destacado */
-        .card-clinica {
-            background-color: #ffffff;
-            border: none;
-            border-radius: 20px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25), 0 0 20px rgba(0, 210, 255, 0.3);
-            padding: 2.5rem;
-            transition: transform 0.3s ease;
-        }
-
-        /* Nome do site em Azul Elétrico Vivo */
-        .brand-title {
-            font-size: 2.2rem;
-            font-weight: 800;
-            color: #0066ff;
-            text-shadow: 0 2px 10px rgba(0, 102, 255, 0.15);
-        }
-
-        /* Cruz Vermelha Brilhante */
-        .cruz-vermelha {
-            color: #ff2a4b;
-            filter: drop-shadow(0 2px 6px rgba(255, 42, 75, 0.4));
-            margin-right: 12px;
-        }
-
-        /* Título de Secção Importante */
-        .texto-importante {
-            color: #0052cc;
-            font-weight: 700;
-            font-size: 1.25rem;
-        }
-
-        /* Estilo dos Rótulos (Labels) */
-        .form-label {
-            color: #111111;
-            font-weight: 700;
-            font-size: 0.95rem;
-        }
-
-        /* Campos de Entrada (Inputs) Mais Vivos e Interativos */
-        .form-control {
-            border: 2px solid #e2e8f0;
-            border-radius: 10px;
-            padding: 12px 15px;
-            font-weight: 500;
-            transition: all 0.3s ease;
-        }
-
-        .form-control:focus {
-            border-color: #0066ff;
-            box-shadow: 0 0 12px rgba(0, 102, 255, 0.3);
-        }
-
-        /* Botão com Gradiente Azul e Animação ao Passar o Rato */
-        .btn-emissao {
-            background: linear-gradient(135deg, #0066ff 0%, #0044cc 100%);
-            border: none;
-            color: #ffffff;
-            font-weight: 700;
-            padding: 14px;
-            border-radius: 12px;
-            font-size: 1.1rem;
-            box-shadow: 0 8px 20px rgba(0, 102, 255, 0.35);
-            transition: all 0.3s ease;
-        }
-
-        .btn-emissao:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 12px 25px rgba(0, 102, 255, 0.5);
-            background: linear-gradient(135deg, #0055ee 0%, #0033bb 100%);
-            color: #ffffff;
+        @media print {
+            .no-print {
+                display: none !important;
+            }
+            body {
+                background: white !important;
+                padding: 0 !important;
+            }
+            .print-container {
+                box-shadow: none !important;
+                border: none !important;
+                padding: 0 !important;
+                width: 100% !important;
+                max-width: 100% !important;
+            }
+            @page {
+                margin: 1.5cm;
+            }
         }
     </style>
 </head>
-<body>
+<body class="bg-slate-50 text-slate-800 font-sans antialiased min-h-screen flex flex-col justify-between">
 
-    <div class="container py-5">
-        <div class="row justify-content-center">
-            <div class="col-lg-8">
-                
-                <!-- Cartão com Fundo Branco e Sombra Brilhante -->
-                <div class="card-clinica">
-                    
-                    <!-- Logótipo da Clínica -->
-                    <div class="text-center mb-4 pb-3 border-bottom">
-                        <h1 class="brand-title d-flex align-items-center justify-content-center">
-                            <i class="fa-solid fa-cross cruz-vermelha"></i>empresarialclinic
-                        </h1>
-                        <p class="text-secondary fw-semibold mb-0">Sistema Inteligente de Emissão de Laudos</p>
+    <!-- Navbar / Header do Sistema -->
+    <header class="bg-slate-900 text-white border-b border-slate-800 sticky top-0 z-50 no-print">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 rounded-xl bg-sky-500/10 border border-sky-500/30 flex items-center justify-center text-sky-400 font-bold text-xl">
+                    <i class="fa-solid fa-file-waveform"></i>
+                </div>
+                <div>
+                    <span class="text-lg font-bold tracking-tight text-white block leading-none">OmniLaudo<span class="text-sky-400">.med</span></span>
+                    <span class="text-xs text-slate-400 font-medium">Plataforma Integrada de Medicina Ocupacional</span>
+                </div>
+            </div>
+            <div class="flex items-center space-x-4">
+                <span class="inline-flex items-center gap-x-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                    Servidor Ativo
+                </span>
+            </div>
+        </div>
+    </header>
+
+    {% if paciente %}
+    <!-- Vista de Resultado: O LAUDO GERADO (Pronto para Impressão / PDF) -->
+    <main class="flex-grow max-w-4xl w-full mx-auto p-4 sm:p-6 lg:p-8">
+        <!-- Barra de Ações Rápidas (Escondida no PDF) -->
+        <div class="mb-6 flex flex-wrap items-center justify-between gap-4 bg-white p-4 rounded-2xl shadow-sm border border-slate-200/80 no-print">
+            <a href="/" class="inline-flex items-center gap-2 px-4 py-2.5 text-sm font-semibold text-slate-700 bg-slate-100 hover:bg-slate-200 rounded-xl transition-all">
+                <i class="fa-solid fa-arrow-left"></i>
+                Criar Novo Laudo
+            </a>
+            <div class="flex items-center gap-3">
+                <button onclick="window.print()" class="inline-flex items-center gap-2 px-6 py-2.5 text-sm font-semibold text-white bg-sky-600 hover:bg-sky-700 active:bg-sky-800 rounded-xl shadow-sm transition-all shadow-sky-600/20">
+                    <i class="fa-solid fa-print"></i>
+                    Imprimir ou Salvar em PDF
+                </button>
+            </div>
+        </div>
+
+        <!-- Documento Papel A4 / Timbrado do Laudo -->
+        <div class="print-container bg-white rounded-2xl border border-slate-200 shadow-xl p-8 sm:p-12 text-slate-900 relative">
+            
+            <!-- Cabecalho do Laudo -->
+            <div class="flex justify-between items-start border-b-2 border-slate-900 pb-6 mb-8">
+                <div>
+                    <div class="flex items-center gap-2 text-sky-700 font-bold text-xl tracking-tight uppercase">
+                        <i class="fa-solid fa-hospital-user text-2xl"></i>
+                        <span>Clínica de Medicina Ocupacional & Diagnósticos</span>
                     </div>
+                    <p class="text-xs text-slate-500 mt-1">CNPJ: 00.000.000/0001-00 • Registro CRM/SP: 999999</p>
+                    <p class="text-xs text-slate-500">Av. Paulista, 1000 - São Paulo, SP • Telefone: (11) 3000-0000</p>
+                </div>
+                <div class="text-right">
+                    <span class="inline-block px-3 py-1 bg-slate-100 text-slate-700 font-mono text-xs font-bold rounded border border-slate-300">
+                        LAUDO Nº #{{ id_laudo if id_laudo else '2026-8942' }}
+                    </span>
+                    <p class="text-xs text-slate-400 mt-2">Emissão: <span class="font-medium text-slate-700">05/10/2026</span></p>
+                </div>
+            </div>
 
-                    <!-- Título Importante -->
-                    <h4 class="texto-importante mb-3">
-                        <i class="fa-solid fa-file-medical me-2"></i>Novo Laudo Clínico
-                    </h4>
+            <!-- Titulo Principal -->
+            <div class="text-center my-6">
+                <h1 class="text-2xl font-black text-slate-900 tracking-wider uppercase">RELATÓRIO / LAUDO MÉDICO OCUPACIONAL</h1>
+                <p class="text-xs font-semibold text-sky-700 uppercase tracking-widest mt-0.5">Avaliação de Aptidão para o Trabalho</p>
+            </div>
 
-                    <!-- Formulário -->
-                    <form action="/gerar" method="POST">
-                        <div class="row mb-3">
-                            <div class="col-md-8 mb-3 mb-md-0">
-                                <label class="form-label">Nome Completo do Paciente</label>
-                                <input type="text" class="form-control" name="paciente" placeholder="Digite o nome..." required>
-                            </div>
-                            <div class="col-md-4">
-                                <label class="form-label">Idade</label>
-                                <input type="number" class="form-control" name="idade" placeholder="Ex: 38">
+            <!-- Dados do Paciente e Exame -->
+            <div class="bg-slate-50 rounded-xl p-5 border border-slate-200/80 mb-8 grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
+                <div>
+                    <span class="text-xs font-bold text-slate-400 uppercase block tracking-wider">Nome do Paciente / Trabalhador</span>
+                    <span class="text-base font-bold text-slate-900">{{ paciente }}</span>
+                </div>
+                <div>
+                    <span class="text-xs font-bold text-slate-400 uppercase block tracking-wider">Idade</span>
+                    <span class="text-base font-semibold text-slate-800">{{ idade if idade else 'Não informada' }} anos</span>
+                </div>
+                <div>
+                    <span class="text-xs font-bold text-slate-400 uppercase block tracking-wider">Natureza do Exame</span>
+                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-sky-100 text-sky-800 border border-sky-200 mt-1">
+                        {{ natureza if natureza else 'Exame Clínico Geral' }}
+                    </span>
+                </div>
+                <div>
+                    <span class="text-xs font-bold text-slate-400 uppercase block tracking-wider">Status do Documento</span>
+                    <span class="text-emerald-700 font-semibold flex items-center gap-1.5 mt-1">
+                        <i class="fa-solid fa-circle-check"></i> Homologado & Assinado Digitalmente
+                    </span>
+                </div>
+            </div>
+
+            <!-- Lista de Exames Realizados -->
+            <div class="mb-8">
+                <h2 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3 flex items-center gap-2">
+                    <i class="fa-solid fa-list-check text-sky-600"></i> Exames Realizados & Resultados
+                </h2>
+                <div class="border border-slate-200 rounded-xl overflow-hidden">
+                    <table class="w-full text-left text-sm">
+                        <thead class="bg-slate-100 border-b border-slate-200 text-xs font-bold text-slate-600 uppercase">
+                            <tr>
+                                <th class="py-3 px-4">Procedimento / Exame</th>
+                                <th class="py-3 px-4">Método</th>
+                                <th class="py-3 px-4 text-right">Resultado / Parecer</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-200 font-medium">
+                            {% if lista_exames %}
+                                {% for item in lista_exames %}
+                                <tr>
+                                    <td class="py-3 px-4 font-semibold text-slate-800">{{ item }}</td>
+                                    <td class="py-3 px-4 text-slate-500 text-xs">Avaliação Ocupacional Direta</td>
+                                    <td class="py-3 px-4 text-right text-emerald-600 font-bold">
+                                        <i class="fa-solid fa-check text-xs mr-1"></i> Normal / Sem Alterações
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            {% else %}
+                                <tr>
+                                    <td colspan="3" class="py-4 px-4 text-slate-500 text-center italic">Nenhum exame específico selecionado.</td>
+                                </tr>
+                            {% endif %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Conclusão / Parecer Médico -->
+            <div class="mb-12">
+                <h2 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3 flex items-center gap-2">
+                    <i class="fa-solid fa-user-doctor text-sky-600"></i> Conclusão & Parecer Clínico
+                </h2>
+                <div class="bg-slate-50 border-l-4 border-sky-600 p-5 rounded-r-xl border-y border-r border-slate-200">
+                    <p class="text-sm text-slate-700 leading-relaxed font-normal whitespace-pre-line">
+                        {{ conclusao if conclusao else 'O paciente foi submetido aos exames clínicos ocupacionais acima discriminados, apresentando parâmetros dentro dos padrões da normalidade para o exercício de suas funções.' }}
+                    </p>
+                </div>
+            </div>
+
+            <!-- Rodapé e Bloco de Assinatura -->
+            <div class="mt-16 pt-8 border-t border-slate-200 grid grid-cols-2 gap-8 items-end">
+                <div class="text-xs text-slate-400 space-y-1">
+                    <p class="font-bold text-slate-600">OmniLaudo - Sistema de Gestão Médica</p>
+                    <p>Documento gerado e validado via sistema eletrônico.</p>
+                    <p>Chave de Autenticidade: <span class="font-mono text-slate-500">A8F9-9021-BC44-2026</span></p>
+                </div>
+                <div class="text-center">
+                    <div class="border-b-2 border-slate-800 pb-1 mx-auto w-3/4">
+                        <span class="font-serif italic text-lg text-slate-800 block -mb-1 font-bold">Dr. Responsável Técnico</span>
+                    </div>
+                    <p class="text-xs font-bold text-slate-800 mt-2">Dr. Alexandre Cardoso</p>
+                    <p class="text-xs text-slate-500">Médico do Trabalho • CRM/SP 123.456</p>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    {% else %}
+
+    <!-- Vista de Formulario: A TELA PRINCIPAL DE CRIAÇÃO -->
+    <main class="flex-grow max-w-4xl w-full mx-auto p-4 sm:p-6 lg:p-8">
+        
+        <!-- Titulo do Painel -->
+        <div class="mb-8 text-center sm:text-left flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div>
+                <h1 class="text-2xl font-bold text-slate-900 tracking-tight">Emissão de Novo Laudo Ocupacional</h1>
+                <p class="text-sm text-slate-500 mt-1">Preencha os dados do paciente e selecione os exames realizados.</p>
+            </div>
+            <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-sky-50 text-sky-700 border border-sky-200 text-xs font-semibold">
+                <i class="fa-solid fa-shield-halved"></i> Ambiente Seguro
+            </div>
+        </div>
+
+        <!-- Card Principal do Formulario -->
+        <form action="/gerar" method="POST" class="bg-white rounded-2xl border border-slate-200 shadow-xl overflow-hidden">
+            
+            <div class="p-6 sm:p-8 space-y-8">
+                
+                <!-- Secao 1: Identificacao do Paciente -->
+                <div class="space-y-4">
+                    <h2 class="text-xs font-bold uppercase tracking-wider text-sky-600 flex items-center gap-2">
+                        <span class="w-6 h-6 rounded-full bg-sky-100 text-sky-700 flex items-center justify-center text-xs font-extrabold">1</span>
+                        Identificação do Paciente
+                    </h2>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                        <div class="sm:col-span-2">
+                            <label class="block text-xs font-bold text-slate-700 uppercase tracking-wide mb-1">Nome Completo do Paciente *</label>
+                            <div class="relative">
+                                <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
+                                    <i class="fa-solid fa-user"></i>
+                                </div>
+                                <input type="text" name="paciente" required placeholder="Ex: Carlos Eduardo da Silva" class="w-full pl-10 pr-4 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-sky-500 focus:border-sky-500 text-sm font-medium text-slate-900 transition-all placeholder:text-slate-400">
                             </div>
                         </div>
-
-                       <div class="mb-3">
-    <label class="form-label d-block">Tipos de Exame / Procedimento (Selecione um ou mais)</label>
-    
-    <div class="form-check form-check-inline">
-        <input class="form-check-input" type="checkbox" name="exame" value="Exame Clínico" id="exame1">
-        <label class="form-check-label" for="exame1">Exame Clínico</label>
-    </div>
-    
-    <div class="form-check form-check-inline">
-        <input class="form-check-input" type="checkbox" name="exame" value="Psicossocial" id="exame2">
-        <label class="form-check-label" for="exame2">Psicossocial</label>
-    </div>
-    
-    <div class="form-check form-check-inline">
-        <input class="form-check-input" type="checkbox" name="exame" value="Acuidade Visual" id="exame3">
-        <label class="form-check-label" for="exame3">Acuidade Visual</label>
-    </div>
-</div>
-<div class="mb-3">
-    <label class="form-label d-block">Natureza do Exame (Selecione apenas uma)</label>
-    
-    <div class="form-check form-check-inline">
-        <input class="form-check-input" type="radio" name="natureza" id="nat1" value="Admissional" required>
-        <label class="form-check-label" for="nat1">Admissional</label>
-    </div>
-    
-    <div class="form-check form-check-inline">
-        <input class="form-check-input" type="radio" name="natureza" id="nat2" value="Demissional">
-        <label class="form-check-label" for="nat2">Demissional</label>
-    </div>
-    
-    <div class="form-check form-check-inline">
-        <input class="form-check-input" type="radio" name="natureza" id="nat3" value="Periódico">
-        <label class="form-check-label" for="nat3">Periódico</label>
-    </div>
-
-    <div class="form-check form-check-inline">
-        <input class="form-check-input" type="radio" name="natureza" id="nat4" value="Mudança de Função">
-        <label class="form-check-label" for="nat4">Mudança de Função</label>
-    </div>
-</div>
-
-                        <div class="mb-4">
-                            <label class="form-label">Descrição / Conclusão do Laudo</label>
-                            <textarea class="form-control" name="conclusao" rows="5" placeholder="Digite o parecer clínico..."></textarea>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 uppercase tracking-wide mb-1">Idade *</label>
+                            <div class="relative">
+                                <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
+                                    <i class="fa-solid fa-cake-candles"></i>
+                                </div>
+                                <input type="number" name="idade" required placeholder="Ex: 35" min="1" max="120" class="w-full pl-10 pr-4 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-sky-500 focus:border-sky-500 text-sm font-medium text-slate-900 transition-all placeholder:text-slate-400">
+                            </div>
                         </div>
+                    </div>
+                </div>
 
-                        <!-- Botão com Brilho e Gradiente -->
-                        <button type="submit" class="btn btn-emissao w-100">
-                            <i class="fa-solid fa-circle-check me-2"></i>Gerar e Emitir Laudo
-                        </button>
-                    </form>
+                <hr class="border-slate-100">
 
+                <!-- Secao 2: Natureza do Exame -->
+                <div class="space-y-4">
+                    <h2 class="text-xs font-bold uppercase tracking-wider text-sky-600 flex items-center gap-2">
+                        <span class="w-6 h-6 rounded-full bg-sky-100 text-sky-700 flex items-center justify-center text-xs font-extrabold">2</span>
+                        Natureza do Exame
+                    </h2>
+
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                        <label class="relative flex flex-col p-3 rounded-xl border border-slate-200 cursor-pointer hover:border-sky-400 hover:bg-sky-50/50 transition-all has-[:checked]:border-sky-600 has-[:checked]:bg-sky-50 has-[:checked]:ring-1 has-[:checked]:ring-sky-600">
+                            <input type="radio" name="natureza" value="Exame Admissional" checked class="sr-only">
+                            <span class="text-xs font-bold text-slate-800">Admissional</span>
+                            <span class="text-[10px] text-slate-500 mt-0.5">Contratação</span>
+                        </label>
+                        <label class="relative flex flex-col p-3 rounded-xl border border-slate-200 cursor-pointer hover:border-sky-400 hover:bg-sky-50/50 transition-all has-[:checked]:border-sky-600 has-[:checked]:bg-sky-50 has-[:checked]:ring-1 has-[:checked]:ring-sky-600">
+                            <input type="radio" name="natureza" value="Exame Periódico" class="sr-only">
+                            <span class="text-xs font-bold text-slate-800">Periódico</span>
+                            <span class="text-[10px] text-slate-500 mt-0.5">Rotina</span>
+                        </label>
+                        <label class="relative flex flex-col p-3 rounded-xl border border-slate-200 cursor-pointer hover:border-sky-400 hover:bg-sky-50/50 transition-all has-[:checked]:border-sky-600 has-[:checked]:bg-sky-50 has-[:checked]:ring-1 has-[:checked]:ring-sky-600">
+                            <input type="radio" name="natureza" value="Exame Demissional" class="sr-only">
+                            <span class="text-xs font-bold text-slate-800">Demissional</span>
+                            <span class="text-[10px] text-slate-500 mt-0.5">Desligamento</span>
+                        </label>
+                        <label class="relative flex flex-col p-3 rounded-xl border border-slate-200 cursor-pointer hover:border-sky-400 hover:bg-sky-50/50 transition-all has-[:checked]:border-sky-600 has-[:checked]:bg-sky-50 has-[:checked]:ring-1 has-[:checked]:ring-sky-600">
+                            <input type="radio" name="natureza" value="Mudança de Função / Retorno" class="sr-only">
+                            <span class="text-xs font-bold text-slate-800">Mudança / Retorno</span>
+                            <span class="text-[10px] text-slate-500 mt-0.5">Afastamento</span>
+                        </label>
+                    </div>
+                </div>
+
+                <hr class="border-slate-100">
+
+                <!-- Secao 3: Selecao dos Exames Complementares -->
+                <div class="space-y-4">
+                    <h2 class="text-xs font-bold uppercase tracking-wider text-sky-600 flex items-center gap-2">
+                        <span class="w-6 h-6 rounded-full bg-sky-100 text-sky-700 flex items-center justify-center text-xs font-extrabold">3</span>
+                        Exames Complementares Realizados
+                    </h2>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <label class="flex items-center p-3.5 rounded-xl border border-slate-200 cursor-pointer hover:border-slate-300 hover:bg-slate-50 transition-all has-[:checked]:bg-sky-50/80 has-[:checked]:border-sky-500">
+                            <input type="checkbox" name="exame" value="Avaliação Clínica Ocupacional Geral" checked class="w-4 h-4 text-sky-600 rounded border-slate-300 focus:ring-sky-500">
+                            <span class="ml-3 text-sm font-semibold text-slate-800">Avaliação Clínica Geral</span>
+                        </label>
+                        <label class="flex items-center p-3.5 rounded-xl border border-slate-200 cursor-pointer hover:border-slate-300 hover:bg-slate-50 transition-all has-[:checked]:bg-sky-50/80 has-[:checked]:border-sky-500">
+                            <input type="checkbox" name="exame" value="Audiometria Tonal e Vocal" class="w-4 h-4 text-sky-600 rounded border-slate-300 focus:ring-sky-500">
+                            <span class="ml-3 text-sm font-semibold text-slate-800">Audiometria Tonal & Vocal</span>
+                        </label>
+                        <label class="flex items-center p-3.5 rounded-xl border border-slate-200 cursor-pointer hover:border-slate-300 hover:bg-slate-50 transition-all has-[:checked]:bg-sky-50/80 has-[:checked]:border-sky-500">
+                            <input type="checkbox" name="exame" value="Electrocardiograma (ECG)" class="w-4 h-4 text-sky-600 rounded border-slate-300 focus:ring-sky-500">
+                            <span class="ml-3 text-sm font-semibold text-slate-800">Eletrocardiograma (ECG)</span>
+                        </label>
+                        <label class="flex items-center p-3.5 rounded-xl border border-slate-200 cursor-pointer hover:border-slate-300 hover:bg-slate-50 transition-all has-[:checked]:bg-sky-50/80 has-[:checked]:border-sky-500">
+                            <input type="checkbox" name="exame" value="Electroencefalograma (EEG)" class="w-4 h-4 text-sky-600 rounded border-slate-300 focus:ring-sky-500">
+                            <span class="ml-3 text-sm font-semibold text-slate-800">Eletroencefalograma (EEG)</span>
+                        </label>
+                        <label class="flex items-center p-3.5 rounded-xl border border-slate-200 cursor-pointer hover:border-slate-300 hover:bg-slate-50 transition-all has-[:checked]:bg-sky-50/80 has-[:checked]:border-sky-500">
+                            <input type="checkbox" name="exame" value="Acuidade Visual e Visão de Cores" class="w-4 h-4 text-sky-600 rounded border-slate-300 focus:ring-sky-500">
+                            <span class="ml-3 text-sm font-semibold text-slate-800">Acuidade Visual</span>
+                        </label>
+                        <label class="flex items-center p-3.5 rounded-xl border border-slate-200 cursor-pointer hover:border-slate-300 hover:bg-slate-50 transition-all has-[:checked]:bg-sky-50/80 has-[:checked]:border-sky-500">
+                            <input type="checkbox" name="exame" value="Espirometria Ocupacional" class="w-4 h-4 text-sky-600 rounded border-slate-300 focus:ring-sky-500">
+                            <span class="ml-3 text-sm font-semibold text-slate-800">Espirometria</span>
+                        </label>
+                    </div>
+                </div>
+
+                <hr class="border-slate-100">
+
+                <!-- Secao 4: Parecer / Observacoes -->
+                <div class="space-y-4">
+                    <h2 class="text-xs font-bold uppercase tracking-wider text-sky-600 flex items-center gap-2">
+                        <span class="w-6 h-6 rounded-full bg-sky-100 text-sky-700 flex items-center justify-center text-xs font-extrabold">4</span>
+                        Parecer Clínico / Observações do Médico
+                    </h2>
+
+                    <div>
+                        <textarea name="conclusao" rows="3" placeholder="Insira o texto do parecer médico (Ex: Paciente considerado APTO para a função exercida...)" class="w-full p-4 rounded-xl border border-slate-300 focus:ring-2 focus:ring-sky-500 focus:border-sky-500 text-sm font-medium text-slate-900 transition-all placeholder:text-slate-400">APTO para o exercício das funções propostas, sem restrições médicas no momento da avaliação.</textarea>
+                    </div>
                 </div>
 
             </div>
+
+            <!-- Rodape do Formulario com Botao de Submissao -->
+            <div class="bg-slate-50 px-6 py-4 border-t border-slate-200 flex items-center justify-end">
+                <button type="submit" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-3.5 text-sm font-bold text-white bg-sky-600 hover:bg-sky-700 active:bg-sky-800 rounded-xl shadow-lg shadow-sky-600/25 transition-all">
+                    <i class="fa-solid fa-file-signature"></i>
+                    Gerar Laudo Profissional
+                </button>
+            </div>
+
+        </form>
+    </main>
+
+    {% endif %}
+
+    <!-- Footer Geral da Aplicacao -->
+    <footer class="bg-white border-t border-slate-200 py-6 mt-12 no-print">
+        <div class="max-w-7xl mx-auto px-4 text-center text-xs text-slate-400">
+            <p>© 2026 OmniLaudo.med • Sistema Profissional para Emissão de Laudos Médicos Ocupacionais.</p>
         </div>
-    </div>
+    </footer>
 
 </body>
 </html>
+```eofs
