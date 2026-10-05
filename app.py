@@ -1,7 +1,12 @@
 from flask import Flask, render_template, request
 
 app = Flask(__name__)
+@app.route('/')
+def index():
+    return render_template('index.html')
 
+@app.route('/gerar', methods=['POST'])
+def gerar_laudo():
 @app.route('/gerar', methods=['POST'])
 def gerar_laudo():
     paciente = request.form.get('paciente')
