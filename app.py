@@ -2,21 +2,29 @@ from flask import Flask, render_template, request
 
 app = Flask(__name__)
 
-@app.route("/", methods=["GET", "POST"])
-def inicio():
-    if request.method == "POST":
-        paciente = request.form.get("paciente")
-        tipo_exame = request.form.get("tipo_exame")
-        observacoes = request.form.get("observacoes")
-        
-        return render_template(
-            "index.html",
-            paciente=paciente,
-            tipo_exame=tipo_exame,
-            observacoes=observacoes
-        )
+@app.route('/gerar', methods=['POST'])
+def gerar_laudo():
+    paciente = request.form.get('paciente')
+    idade = request.form.get('idade')
     
-    return render_template("index.html")
+    # Captura a natureza do exame (apenas 1 opção)
+    natureza = request.form.get('natureza')
+    
+    # Captura todos os exames marcados
+    lista_exames = request.form.getlist('exame')
+    exame_texto = ", ".join(lista_exames) if lista_exames else "Nenhum exame selecionado"
+    
+    conclusao = request.form.get('conclusao')
+    
+    return render_template(
+        'laudo.html', 
+        paciente=paciente, 
+        idade=idade, 
+        natureza=natureza,
+        exame=exame_texto, 
+        lista_exames=lista_exames, 
+        conclusao=conclusao
+    )
 
 if __name__ == "__main__":
     app.run(debug=True)
