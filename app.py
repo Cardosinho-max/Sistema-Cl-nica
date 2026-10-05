@@ -1,12 +1,11 @@
 from flask import Flask, render_template, request
 
 app = Flask(__name__)
+
 @app.route('/')
 def index():
     return render_template('index.html')
 
-@app.route('/gerar', methods=['POST'])
-def gerar_laudo():
 @app.route('/gerar', methods=['POST'])
 def gerar_laudo():
     paciente = request.form.get('paciente')
@@ -22,14 +21,14 @@ def gerar_laudo():
     conclusao = request.form.get('conclusao')
     
     return render_template(
-        'laudo.html', 
-        paciente=paciente, 
-        idade=idade, 
+        'laudo.html',
+        paciente=paciente,
+        idade=idade,
         natureza=natureza,
-        exame=exame_texto, 
-        lista_exames=lista_exames, 
+        exame=exame_texto,
+        lista_exames=lista_exames,
         conclusao=conclusao
     )
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     app.run(debug=True)
