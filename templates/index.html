@@ -1,51 +1,133 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt">
 <head>
     <meta charset="UTF-8">
-    <title>Sistema da Clínica - Exame Clínico</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>empresarialclinic - Gerador de Laudos</title>
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Ícones FontAwesome (para a cruz vermelha e símbolos) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
     <style>
-        body { font-family: Arial, sans-serif; margin: 40px; background-color: #f4f6f9; }
-        .container { max-width: 600px; background: white; padding: 25px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); margin: auto; }
-        h1 { color: #2c3e50; font-size: 24px; }
-        label { font-weight: bold; display: block; margin-top: 15px; }
-        input, select, textarea { width: 100%; padding: 8px; margin-top: 5px; box-sizing: border-box; border: 1px solid #ccc; border-radius: 4px; }
-        button { margin-top: 20px; background: #27ae60; color: white; border: none; padding: 12px; width: 100%; font-size: 16px; border-radius: 5px; cursor: pointer; }
-        button:hover { background: #219150; }
-        .laudo { margin-top: 30px; border-top: 2px dashed #ccc; padding-top: 20px; }
-        .btn-print { background: #2980b9; margin-top: 10px; }
-        .btn-print:hover { background: #1f618d; }
+        /* Fundo em azul piscina misturado com verde musgo */
+        body {
+            font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+            background: linear-gradient(135deg, #00ced1 0%, #355e3b 100%);
+            min-height: 100vh;
+            color: #111111; /* Texto geral em preto */
+        }
+
+        /* Cartão principal em branco puro */
+        .card-clinica {
+            background-color: #ffffff;
+            border: none;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            padding: 2rem;
+        }
+
+        /* Cabeçalho da clínica */
+        .brand-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #0d6efd; /* Nome/Destaque em Azul */
+        }
+
+        /* Cruz Vermelha */
+        .cruz-vermelha {
+            color: #dc3545;
+            margin-right: 10px;
+        }
+
+        /* Elementos e Títulos Importantes em Azul */
+        .texto-importante {
+            color: #0d6efd;
+            font-weight: 600;
+        }
+
+        /* Labels dos formulários em Preto */
+        .form-label {
+            color: #111111;
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        /* Botão Principal */
+        .btn-emissao {
+            background-color: #0d6efd;
+            border-color: #0d6efd;
+            color: #ffffff;
+            font-weight: 600;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 1.05rem;
+        }
+
+        .btn-emissao:hover {
+            background-color: #0b5ed7;
+            border-color: #0a58ca;
+        }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Gerador de Exame Clínico</h1>
-        
-        <form action="/" method="POST">
-            <label for="paciente">Nome do Paciente:</label>
-            <input type="text" id="paciente" name="paciente" required>
 
-            <label for="tipo_exame">Tipo de Exame:</label>
-            <select id="tipo_exame" name="tipo_exame">
-                <option value="Avaliação Clínica Geral">Avaliação Clínica Geral</option>
-                <option value="Exame de Vista / Refracional">Exame de Vista / Refracional</option>
-                <option value="Atestado Ocupacional">Atestado Ocupacional</option>
-            </select>
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                
+                <!-- Card em Fundo Branco -->
+                <div class="card-clinica">
+                    
+                    <!-- Cabeçalho com Logótipo / Nome e Cruz Vermelha -->
+                    <div class="text-center mb-4 pb-3 border-bottom">
+                        <h1 class="brand-title d-flex align-items-center justify-content-center">
+                            <i class="fa-solid fa-cross cruz-vermelha"></i>empresarialclinic
+                        </h1>
+                        <p class="text-muted mb-0">Sistema de Emissão de Laudos Médicos</p>
+                    </div>
 
-            <label for="observacoes">Observações / Laudo:</label>
-            <textarea id="observacoes" name="observacoes" rows="4" placeholder="Digite as conclusões do exame..."></textarea>
+                    <!-- Título da Secção Importante em Azul -->
+                    <h4 class="texto-importante mb-3">
+                        <i class="fa-solid fa-file-medical me-2"></i>Novo Laudo Clínico
+                    </h4>
 
-            <button type="submit">Gerar Exame Clínico</button>
-        </form>
+                    <!-- Formulário de Exemplo -->
+                    <form action="/gerar" method="POST">
+                        <div class="row mb-3">
+                            <div class="col-md-8 mb-3 mb-md-0">
+                                <label class="form-label">Nome Completo do Paciente</label>
+                                <input type="text" class="form-control" name="paciente" placeholder="Digite o nome..." required>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">Idade</label>
+                                <input type="number" class="form-control" name="idade" placeholder="Ex: 38">
+                            </div>
+                        </div>
 
-        {% if paciente %}
-        <div class="laudo">
-            <h2>Comprovativo / Laudo Gerado</h2>
-            <p><strong>Paciente:</strong> {{ paciente }}</p>
-            <p><strong>Exame:</strong> {{ tipo_exame }}</p>
-            <p><strong>Resultado/Observações:</strong> {{ observacoes }}</p>
-            <button class="btn-print" onclick="window.print()">Imprimir / Salvar em PDF</button>
+                        <div class="mb-3">
+                            <label class="form-label">Tipo de Exame / Procedimento</label>
+                            <input type="text" class="form-control" name="exame" placeholder="Ex: Avaliação Ocupacional / Exame Clínico">
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label">Descrição / Conclusão do Laudo</label>
+                            <textarea class="form-control" name="conclusao" rows="5" placeholder="Digite o parecer clínico..."></textarea>
+                        </div>
+
+                        <!-- Botão Importante em Azul -->
+                        <button type="submit" class="btn btn-emissao w-100">
+                            <i class="fa-solid fa-check-circle me-2"></i>Gerar e Emitir Laudo
+                        </button>
+                    </form>
+
+                </div>
+
+            </div>
         </div>
-        {% endif %}
     </div>
+
 </body>
 </html>
